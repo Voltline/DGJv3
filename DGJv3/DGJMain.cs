@@ -11,8 +11,6 @@ namespace DGJv3
     {
         private readonly DGJWindow window;
 
-        private VersionChecker versionChecker;
-
         public DGJMain()
         {
             try
@@ -23,11 +21,11 @@ namespace DGJv3
             catch (Exception) { }
             AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
 
-            PluginName = "点歌姬";
+            PluginName = "点歌姬(Modified By Voltline)";
             PluginVer = BuildInfo.Version;
             PluginDesc = "使用弹幕点播歌曲";
-            PluginAuth = "Genteure";
-            PluginCont = "dgj3@genteure.com";
+            PluginAuth = "Genteure(Modified By Voltline)";
+            PluginCont = "Voltline@163.com";
 
             try
             {
@@ -35,26 +33,6 @@ namespace DGJv3
             }
             catch (Exception) { }
             window = new DGJWindow(this);
-            versionChecker = new VersionChecker("DGJv3");
-            Task.Run(() =>
-            {
-                if (versionChecker.FetchInfo())
-                {
-                    Version current = new Version(BuildInfo.Version);
-
-                    if (versionChecker.HasNewVersion(current))
-                    {
-                        Log("插件有新版本" + Environment.NewLine +
-                            $"当前版本：{BuildInfo.Version}" + Environment.NewLine +
-                            $"最新版本：{versionChecker.Version.ToString()} 更新时间：{versionChecker.UpdateDateTime.ToShortDateString()}" + Environment.NewLine +
-                            versionChecker.UpdateDescription);
-                    }
-                }
-                else
-                {
-                    Log("版本检查出错：" + versionChecker?.LastException?.Message);
-                }
-            });
         }
 
         public override void Admin()

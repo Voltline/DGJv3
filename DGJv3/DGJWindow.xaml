@@ -15,7 +15,7 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         Closing="Window_Closing"
-        Title="点歌姬" Height="550" Width="830">
+        Title="点歌姬(Modified By Voltline)" Height="550" Width="830">
     <Window.Resources>
         <ResourceDictionary>
             <s:Boolean x:Key="True">True</s:Boolean>
@@ -285,9 +285,18 @@
                     /
                     <TextBlock Width="80" Text="{Binding TotalTimeString, Mode=OneWay}" TextAlignment="Left"/>
                 </TextBlock>
-                    <materialDesign:PackIcon x:Name="PackIconVolumeHigh" Width="24" Height="24" Kind="VolumeHigh" VerticalAlignment="Center" Margin="15,10,0,0"/>
-                    <Slider Style="{StaticResource MaterialDesignDiscreteSlider}" Value="{Binding Volume,Converter={StaticResource PlayerVolumeConverter}}"
-                        Width="150" Orientation="Horizontal" Minimum="0" Maximum="100" VerticalAlignment="Center"/>
+                    <materialDesign:PackIcon x:Name="PackIconVolumeHigh" Width="24" Height="24" Kind="VolumeHigh" VerticalAlignment="Center" Margin="15,10,0,0" RenderTransformOrigin="0.5,0.5">
+                        <materialDesign:PackIcon.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform AngleY="1.469"/>
+                                <RotateTransform/>
+                                <TranslateTransform Y="0.308"/>
+                            </TransformGroup>
+                        </materialDesign:PackIcon.RenderTransform>
+                    </materialDesign:PackIcon>
+                    <Slider Style="{StaticResource MaterialDesignDiscreteSlider}" Value="{Binding Volume, Converter={StaticResource PlayerVolumeConverter}}"
+                        Width="150" Orientation="Horizontal" Minimum="0" Maximum="100" Height="53" ValueChanged="Slider_ValueChanged" RenderTransformOrigin="0.506,0.701"/>
                     <!-- 设置开始 -->
                     <materialDesign:PopupBox Margin="30,0,0,0" DataContext="{Binding ElementName=DGJRootWindow,Path=DataContext}"
                                              StaysOpen="True" PlacementMode="TopAndAlignCentres">
