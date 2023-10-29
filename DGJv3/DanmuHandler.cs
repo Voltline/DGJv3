@@ -56,12 +56,15 @@ namespace DGJv3
         /// <param name="danmakuModel"></param>
         internal void ProcessDanmu(DanmakuModel danmakuModel)
         {
+
             if (danmakuModel.MsgType != MsgTypeEnum.Comment || string.IsNullOrWhiteSpace(danmakuModel.CommentText))
                 return;
 
             string[] commands = danmakuModel.CommentText.Split(SPLIT_CHAR, StringSplitOptions.RemoveEmptyEntries);
             string rest = string.Join(" ", commands.Skip(1));
+            Log(rest);
 
+            /*
             if (danmakuModel.isAdmin)
             {
                 switch (commands[0])
@@ -79,12 +82,10 @@ namespace DGJv3
                                 }
                             });
 
-                            /*
                             if (commands.Length >= 2)
                             {
                                 // TODO: 切指定序号的歌曲
                             }
-                            */
                         }
                         return;
                     case "暂停":
@@ -113,16 +114,15 @@ namespace DGJv3
                         break;
                 }
             }
+*           */
 
             switch (commands[0])
             {
                 case "点歌":
-                case "點歌":
                     {
                         DanmuAddSong(danmakuModel, rest);
                     }
                     return;
-                case "取消點歌":
                 case "取消点歌":
                     {
                         dispatcher.Invoke(() =>
@@ -135,11 +135,46 @@ namespace DGJv3
                         });
                     }
                     return;
-                case "投票切歌":
+                case "切歌":
                     {
-                        // TODO: 投票切歌
+                        int SongIndex = 0;
+                        bool OrderIndex = false;
+                        if (commands.Length >= 2)
+                        {
+                            OrderIndex = int.TryParse(commands[1], out SongIndex);
+                            SongIndex--;
+
+                            if (!OrderIndex || SongIndex >= Songs.Count) SongIndex = 0;
+                        }
+
+                        dispatcher.Invoke(() =>
+                        {
+                            if (Songs.Count > 0)
+                            {
+                                Songs[SongIndex].Remove(Songs, Downloader, Player);
+
+                                foreach (SongItem songItem in Songs)
+                                {
+                                    Log(songItem.SongId + ", " + songItem.SongName + ", " + songItem.Status + ", " + songItem.UserName);
+                                }
+                                Log("切歌成功！");
+                            }
+                        });
+
                     }
                     return;
+                case "音量":
+                    {
+                        if (commands.Length > 1
+                            && int.TryParse(commands[1], out int volume100)
+                            && volume100 >= 0
+                            && volume100 <= 100)
+                        {
+                            Player.Volume = volume100 / 100f;
+                        }
+                    }
+                    return;
+
                 default:
                     break;
             }

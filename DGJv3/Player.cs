@@ -76,7 +76,11 @@ namespace DGJv3
             }
         }
 
-        public string CurrentTimeString { get => Math.Floor(CurrentTime.TotalMinutes) + ":" + CurrentTime.Seconds; }
+        public string CurrentTimeString
+        {
+            get => ((CurrentTime.TotalMinutes < 10) ? "0" : "") + Math.Floor(CurrentTime.TotalMinutes) + ":"
+                + ((CurrentTime.Seconds < 10) ? "0" : "") + CurrentTime.Seconds;
+        }
 
         /// <summary>
         /// 当前播放时间秒数
@@ -92,7 +96,11 @@ namespace DGJv3
         /// </summary>
         public TimeSpan TotalTime { get => mp3FileReader == null ? TimeSpan.Zero : mp3FileReader.TotalTime; }
 
-        public string TotalTimeString { get => Math.Floor(TotalTime.TotalMinutes) + ":" + TotalTime.Seconds; }
+        public string TotalTimeString
+        {
+            get => ((TotalTime.TotalMinutes < 10) ? "0" : "") + Math.Floor(TotalTime.TotalMinutes) + ":"
+                + ((TotalTime.Seconds < 10) ? "0" : "") + TotalTime.Seconds;
+        }
 
         /// <summary>
         /// 当前是否正在播放歌曲
